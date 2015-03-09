@@ -7,33 +7,35 @@
 
 	public class UserIntegrationTestsBase : AssertionHelper
 	{
-		protected MongoDatabase Database;
-		protected MongoCollection<IdentityUser> Users;
-		protected MongoCollection<IdentityRole> Roles;
-		protected IdentityContext IdentityContext;
+		protected IMongoDatabase Database;
+		protected IMongoCollection<IdentityUser> Users;
+		protected IMongoCollection<IdentityRole> Roles;
+		protected UsersContext<IdentityUser> UsersContext;
+		protected RolesContext<IdentityRole> RolesContext;
 
 		[SetUp]
-		public void BeforeEachTest()
+		public async void BeforeEachTest()
 		{
 			var client = new MongoClient("mongodb://localhost:27017");
 			Database = client.GetServer().GetDatabase("identity-testing");
 			Users = Database.GetCollection<IdentityUser>("users");
 			Roles = Database.GetCollection<IdentityRole>("roles");
-			IdentityContext = new IdentityContext(Users, Roles);
+            RolesContext = new RolesContext<IdentityRole>(Roles);
+            UsersContext = new UsersContext<IdentityUser>(Users);
 
-			Database.DropCollection("users");
-			Database.DropCollection("roles");
+			await Database.DropCollectionAsync("users");
+			await Database.DropCollectionAsync("roles");
 		}
 
 		protected UserManager<IdentityUser> GetUserManager()
 		{
-			var store = new UserStore<IdentityUser>(IdentityContext);
+			var store = new UserStore<IdentityUser>(UsersContext);
 			return new UserManager<IdentityUser>(store);
 		}
 
 		protected RoleManager<IdentityRole> GetRoleManager()
 		{
-			var store = new RoleStore<IdentityRole>(IdentityContext);
+			var store = new RoleStore<IdentityRole>(RolesContext);
 			return new RoleManager<IdentityRole>(store);
 		}
 	}
