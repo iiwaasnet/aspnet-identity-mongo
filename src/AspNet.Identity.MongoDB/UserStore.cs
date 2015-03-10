@@ -46,8 +46,7 @@
             // TODO: Unique index on Email, in case someone updates his email to existing one
             return context
                 .Users
-                .FindOneAndUpdateAsync(u => u.Id == user.Id,
-                                       new ObjectUpdateDefinition<TUser>(user));
+                .ReplaceOneAsync(u => u.Id == user.Id, user, new UpdateOptions {IsUpsert = false});
 
             //return Task.Run(() => context.Users.Save(user));
         }

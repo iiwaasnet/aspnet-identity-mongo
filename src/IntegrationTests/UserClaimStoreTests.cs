@@ -27,6 +27,7 @@
 			var user = new IdentityUser {UserName = "bob"};
 			var manager = GetUserManager();
 			manager.Create(user);
+		    user = manager.FindByName(user.UserName);
 
 			manager.AddClaim(user.Id, new Claim("type", "value"));
 

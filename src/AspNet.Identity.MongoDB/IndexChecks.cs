@@ -1,13 +1,14 @@
 ﻿namespace AspNet.Identity.MongoDB
 {
+    using System.Threading.Tasks;
     using global::MongoDB.Driver;
 
     public static class IndexChecks
     {
-        public static void EnsureUniqueIndexOnUserName<TUser>(this IMongoCollection<TUser> users)
+        public static Task EnsureUniqueIndexOnUserName<TUser>(this IMongoCollection<TUser> users)
             where TUser : IdentityUser
         {
-            users.Indexes.CreateAsync(new IndexDefinitionBuilder<TUser>().Ascending(u => u.UserName),
+            return users.Indexes.CreateAsync(new IndexDefinitionBuilder<TUser>().Ascending(u => u.UserName),
                                       new CreateIndexOptions {Background = true, Unique = true});
 
             //var userName = new IndexKeysBuilder<IdentityUser>().Ascending(t => t.UserName);
@@ -15,10 +16,10 @@
             //users.CreateIndex(userName, unique);
         }
 
-        public static void EnsureUniqueIndexOnRoleName<TRole>(this IMongoCollection<TRole> roles)
+        public static Task EnsureUniqueIndexOnRoleName<TRole>(this IMongoCollection<TRole> roles)
             where TRole : IdentityRole
         {
-            roles.Indexes.CreateAsync(new IndexDefinitionBuilder<TRole>().Ascending(r => r.Name),
+            return roles.Indexes.CreateAsync(new IndexDefinitionBuilder<TRole>().Ascending(r => r.Name),
                                       new CreateIndexOptions {Background = true, Unique = true});
 
             //var roleName = new IndexKeysBuilder<IdentityRole>().Ascending(t => t.Name);
@@ -26,10 +27,10 @@
             //roles.CreateIndex(roleName, unique);
         }
 
-        public static void EnsureUniqueIndexOnEmail<TUser>(this IMongoCollection<TUser> users)
+        public static Task EnsureUniqueIndexOnEmail<TUser>(this IMongoCollection<TUser> users)
             where TUser : IdentityUser
         {
-            users.Indexes.CreateAsync(new IndexDefinitionBuilder<TUser>().Ascending(u => u.Email),
+            return users.Indexes.CreateAsync(new IndexDefinitionBuilder<TUser>().Ascending(u => u.Email),
                                       new CreateIndexOptions { Background = true, Unique = true });
 
             //var email = new IndexKeysBuilder<IdentityUser>().Ascending(t => t.Email);

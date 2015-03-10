@@ -17,7 +17,7 @@
 		public async void BeforeEachTest()
 		{
 			var client = new MongoClient("mongodb://localhost:27017");
-			Database = client.GetServer().GetDatabase("identity-testing");
+			Database = client.GetDatabase("identity-testing");
 			Users = Database.GetCollection<IdentityUser>("users");
 			Roles = Database.GetCollection<IdentityRole>("roles");
             RolesContext = new RolesContext<IdentityRole>(Roles);

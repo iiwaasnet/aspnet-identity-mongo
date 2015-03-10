@@ -1,53 +1,53 @@
 ﻿namespace IntegrationTests
 {
-	using System.Linq;
-	using AspNet.Identity.MongoDB;
-	using Microsoft.AspNet.Identity;
-	using NUnit.Framework;
+    using AspNet.Identity.MongoDB;
+    using Microsoft.AspNet.Identity;
+    using MongoDB.Driver;
+    using NUnit.Framework;
 
-	[TestFixture]
-	public class EnsureWeCanExtendIdentityUserTests : UserIntegrationTestsBase
-	{
-		private UserManager<ExtendedIdentityUser> _Manager;
-		private ExtendedIdentityUser _User;
+    [TestFixture]
+    public class EnsureWeCanExtendIdentityUserTests : UserIntegrationTestsBase
+    {
+        private UserManager<IdentityUser> manager;
+        private ExtendedIdentityUser user;
 
-		public class ExtendedIdentityUser : IdentityUser
-		{
-			public string ExtendedField { get; set; }
-		}
+        public class ExtendedIdentityUser : IdentityUser
+        {
+            public string ExtendedField { get; set; }
+        }
 
-		[SetUp]
-		public void BeforeEachTestAfterBase()
-		{
-			var context = new IdentityContext(Users);
-			var userStore = new UserStore<ExtendedIdentityUser>(context);
-			_Manager = new UserManager<ExtendedIdentityUser>(userStore);
-			_User = new ExtendedIdentityUser
-			{
-				UserName = "bob"
-			};
-		}
+        [SetUp]
+        public void BeforeEachTestAfterBase()
+        {
+            var context = new UsersContext<IdentityUser>(Users);
+            var userStore = new UserStore<IdentityUser>(context);
+            manager = new UserManager<IdentityUser>(userStore);
+            user = new ExtendedIdentityUser
+                   {
+                       UserName = "bob"
+                   };
+        }
 
-		[Test]
-		public void Create_ExtendedUserType_SavesExtraFields()
-		{
-			_User.ExtendedField = "extendedField";
+        [Test]
+        public async void Create_ExtendedUserType_SavesExtraFields()
+        {
+            user.ExtendedField = "extendedField";
 
-			_Manager.Create(_User);
+            manager.Create(user);
 
-			var savedUser = Users.FindAllAs<ExtendedIdentityUser>().Single();
-			Expect(savedUser.ExtendedField, Is.EqualTo("extendedField"));
-		}
+            var savedUser = (ExtendedIdentityUser) await Users.Find(_ => true).SingleAsync();
+            Expect(savedUser.ExtendedField, Is.EqualTo("extendedField"));
+        }
 
-		[Test]
-		public void Create_ExtendedUserType_ReadsExtraFields()
-		{
-			_User.ExtendedField = "extendedField";
+        [Test]
+        public void Create_ExtendedUserType_ReadsExtraFields()
+        {
+            user.ExtendedField = "extendedField";
 
-			_Manager.Create(_User);
+            manager.Create(user);
 
-			var savedUser = _Manager.FindById(_User.Id);
-			Expect(savedUser.ExtendedField, Is.EqualTo("extendedField"));
-		}
-	}
+            var savedUser = (ExtendedIdentityUser) manager.FindById(user.Id);
+            Expect(savedUser.ExtendedField, Is.EqualTo("extendedField"));
+        }
+    }
 }

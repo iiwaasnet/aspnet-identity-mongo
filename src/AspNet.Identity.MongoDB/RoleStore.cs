@@ -43,8 +43,7 @@
         public virtual Task UpdateAsync(TRole role)
         {
             // TODO: Unique index on role name
-            return context.Roles.FindOneAndUpdateAsync(r => r.Id == role.Id,
-                                                       new ObjectUpdateDefinition<TRole>(role));
+            return context.Roles.ReplaceOneAsync(r => r.Id == role.Id, role, new UpdateOptions {IsUpsert = false});
             //return Task.Run(() => context.Roles.Save(role));
         }
 

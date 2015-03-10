@@ -1,58 +1,63 @@
 ﻿namespace IntegrationTests
 {
-	using System.Linq;
-	using AspNet.Identity.MongoDB;
-	using NUnit.Framework;
+    using System.Linq;
+    using AspNet.Identity.MongoDB;
+    using MongoDB.Bson.Serialization;
+    using MongoDB.Driver;
+    using NUnit.Framework;
 
-	[TestFixture]
-	public class IndexChecksTests : UserIntegrationTestsBase
-	{
-		[Test]
-		public void EnsureUniqueIndexOnUserName_NoIndexOnUserName_AddsUniqueIndexOnUserName()
-		{
-			var userCollectionName = "userindextest";
-			Database.DropCollection(userCollectionName);
-			var users = Database.GetCollection(userCollectionName);
+    [TestFixture]
+    public class IndexChecksTests : UserIntegrationTestsBase
+    {
+        [Test]
+        public async void EnsureUniqueIndexOnUserName_NoIndexOnUserName_AddsUniqueIndexOnUserName()
+        {
+            var userCollectionName = "userindextest";
+            await Database.DropCollectionAsync(userCollectionName);
+            var users = Database.GetCollection<IdentityUser>(userCollectionName);
 
-			IndexChecks.EnsureUniqueIndexOnUserName(users);
+            await users.EnsureUniqueIndexOnUserName();
 
-			var index = users.GetIndexes()
-				.Where(i => i.IsUnique)
-				.Where(i => i.Key.Count() == 1)
-				.First(i => i.Key.Contains("UserName"));
-			Expect(index.Key.Count(), Is.EqualTo(1));
-		}
+            var indexes = await (await users.Indexes.ListAsync()).ToListAsync();
+            var index = indexes.Select(d => BsonSerializer.Deserialize<IndexDescription>(d))
+                               .Where(i => i.Unique)
+                               .Where(i => i.Key.Count() == 1)
+                               .First(i => i.Key.Contains("UserName"));
+            Expect(index.Key.Count(), Is.EqualTo(1));
+        }
 
-		[Test]
-		public void EnsureEmailUniqueIndex_NoIndexOnEmail_AddsUniqueIndexOnEmail()
-		{
-			var userCollectionName = "userindextest";
-			Database.DropCollection(userCollectionName);
-			var users = Database.GetCollection(userCollectionName);
+        [Test]
+        public async void EnsureEmailUniqueIndex_NoIndexOnEmail_AddsUniqueIndexOnEmail()
+        {
+            var userCollectionName = "userindextest";
+            await Database.DropCollectionAsync(userCollectionName);
+            var users = Database.GetCollection<IdentityUser>(userCollectionName);
 
-			IndexChecks.EnsureUniqueIndexOnEmail(users);
+            await users.EnsureUniqueIndexOnEmail();
 
-			var index = users.GetIndexes()
-				.Where(i => i.IsUnique)
-				.Where(i => i.Key.Count() == 1)
-				.First(i => i.Key.Contains("Email"));
-			Expect(index.Key.Count(), Is.EqualTo(1));
-		}
+            var indexes = await (await users.Indexes.ListAsync()).ToListAsync();
+            var index = indexes.Select(d => BsonSerializer.Deserialize<IndexDescription>(d))
+                               .Where(i => i.Unique)
+                               .Where(i => i.Key.Count() == 1)
+                               .First(i => i.Key.Contains("Email"));
+            Expect(index.Key.Count(), Is.EqualTo(1));
+        }
 
-		[Test]
-		public void EnsureUniqueIndexOnRoleName_NoIndexOnRoleName_AddsUniqueIndexOnRoleName()
-		{
-			var roleCollectionName = "roleindextest";
-			Database.DropCollection(roleCollectionName);
-			var roles = Database.GetCollection(roleCollectionName);
+        [Test]
+        public async void EnsureUniqueIndexOnRoleName_NoIndexOnRoleName_AddsUniqueIndexOnRoleName()
+        {
+            var roleCollectionName = "roleindextest";
+            await Database.DropCollectionAsync(roleCollectionName);
+            var roles = Database.GetCollection<IdentityRole>(roleCollectionName);
 
-			IndexChecks.EnsureUniqueIndexOnRoleName(roles);
+            await roles.EnsureUniqueIndexOnRoleName();
 
-			var index = roles.GetIndexes()
-				.Where(i => i.IsUnique)
-				.Where(i => i.Key.Count() == 1)
-				.First(i => i.Key.Contains("Name"));
-			Expect(index.Key.Count(), Is.EqualTo(1));
-		}
-	}
+            var indexes = await (await roles.Indexes.ListAsync()).ToListAsync();
+            var index = indexes.Select(d => BsonSerializer.Deserialize<IndexDescription>(d))
+                               .Where(i => i.Unique)
+                               .Where(i => i.Key.Count() == 1)
+                               .First(i => i.Key.Contains("Name"));
+            Expect(index.Key.Count(), Is.EqualTo(1));
+        }
+    }
 }

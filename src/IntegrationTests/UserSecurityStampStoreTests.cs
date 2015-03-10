@@ -3,20 +3,21 @@
 	using System.Linq;
 	using AspNet.Identity.MongoDB;
 	using Microsoft.AspNet.Identity;
+	using MongoDB.Driver;
 	using NUnit.Framework;
 
 	[TestFixture]
 	public class UserSecurityStampStoreTests : UserIntegrationTestsBase
 	{
 		[Test]
-		public void Create_NewUser_HasSecurityStamp()
+		public async void Create_NewUser_HasSecurityStamp()
 		{
 			var manager = GetUserManager();
 			var user = new IdentityUser {UserName = "bob"};
 
 			manager.Create(user);
 
-			var savedUser = Users.FindAll().Single();
+			var savedUser = await Users.Find(_ => true).SingleAsync();
 			Expect(savedUser.SecurityStamp, Is.Not.Null);
 		}
 

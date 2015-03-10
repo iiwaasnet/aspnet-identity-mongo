@@ -1,53 +1,53 @@
 ﻿namespace IntegrationTests
 {
-	using System.Linq;
-	using AspNet.Identity.MongoDB;
-	using Microsoft.AspNet.Identity;
-	using NUnit.Framework;
+    using AspNet.Identity.MongoDB;
+    using Microsoft.AspNet.Identity;
+    using MongoDB.Driver;
+    using NUnit.Framework;
 
-	[TestFixture]
-	public class EnsureWeCanExtendIdentityRoleTests : UserIntegrationTestsBase
-	{
-		private RoleManager<ExtendedIdentityRole> _Manager;
-		private ExtendedIdentityRole _Role;
+    [TestFixture]
+    public class EnsureWeCanExtendIdentityRoleTests : UserIntegrationTestsBase
+    {
+        private RoleManager<IdentityRole> manager;
+        private ExtendedIdentityRole role;
 
-		public class ExtendedIdentityRole : IdentityRole
-		{
-			public string ExtendedField { get; set; }
-		}
+        public class ExtendedIdentityRole : IdentityRole
+        {
+            public string ExtendedField { get; set; }
+        }
 
-		[SetUp]
-		public void BeforeEachTestAfterBase()
-		{
-			var context = new IdentityContext(Users, Roles);
-			var roleStore = new RoleStore<ExtendedIdentityRole>(context);
-			_Manager = new RoleManager<ExtendedIdentityRole>(roleStore);
-			_Role = new ExtendedIdentityRole
-			{
-				Name = "admin"
-			};
-		}
+        [SetUp]
+        public void BeforeEachTestAfterBase()
+        {
+            var context = new RolesContext<IdentityRole>(Roles);
+            var roleStore = new RoleStore<IdentityRole>(context);
+            manager = new RoleManager<IdentityRole>(roleStore);
+            role = new ExtendedIdentityRole
+                   {
+                       Name = "admin"
+                   };
+        }
 
-		[Test]
-		public void Create_ExtendedRoleType_SavesExtraFields()
-		{
-			_Role.ExtendedField = "extendedField";
+        [Test]
+        public async void Create_ExtendedRoleType_SavesExtraFields()
+        {
+            role.ExtendedField = "extendedField";
 
-			_Manager.Create(_Role);
+            manager.Create(role);
 
-			var savedRole = Roles.FindAllAs<ExtendedIdentityRole>().Single();
-			Expect(savedRole.ExtendedField, Is.EqualTo("extendedField"));
-		}
+            var savedRole = (ExtendedIdentityRole) await Roles.Find(_ => true).SingleAsync();
+            Expect(savedRole.ExtendedField, Is.EqualTo("extendedField"));
+        }
 
-		[Test]
-		public void Create_ExtendedRoleType_ReadsExtraFields()
-		{
-			_Role.ExtendedField = "extendedField";
+        [Test]
+        public void Create_ExtendedRoleType_ReadsExtraFields()
+        {
+            role.ExtendedField = "extendedField";
 
-			_Manager.Create(_Role);
+            manager.Create(role);
 
-			var savedRole = _Manager.FindById(_Role.Id);
-			Expect(savedRole.ExtendedField, Is.EqualTo("extendedField"));
-		}
-	}
+            var savedRole = (ExtendedIdentityRole) manager.FindById(role.Id);
+            Expect(savedRole.ExtendedField, Is.EqualTo("extendedField"));
+        }
+    }
 }

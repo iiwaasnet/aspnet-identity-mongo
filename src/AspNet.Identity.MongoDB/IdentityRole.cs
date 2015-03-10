@@ -6,18 +6,18 @@
 
 	public class IdentityRole : IRole<string>
 	{
-		public IdentityRole()
-		{
-			Id = ObjectId.GenerateNewId().ToString();
-		}
+        public IdentityRole()
+        {
+            //Id = ObjectId.GenerateNewId().ToString();
+        }
 
-		public IdentityRole(string roleName) : this()
+		public IdentityRole(string roleName)
 		{
 			Name = roleName;
 		}
 
 		[BsonRepresentation(BsonType.ObjectId)]
-		public string Id { get; private set; }
+		public string Id { get; set; }
 
 		public string Name { get; set; }
 	}

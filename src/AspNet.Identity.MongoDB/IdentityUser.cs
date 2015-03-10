@@ -12,14 +12,14 @@
 	{
 		public IdentityUser()
 		{
-			Id = ObjectId.GenerateNewId().ToString();
 			Roles = new List<string>();
 			Logins = new List<UserLoginInfo>();
 			Claims = new List<IdentityUserClaim>();
 		}
 
 		[BsonRepresentation(BsonType.ObjectId)]
-		public string Id { get; private set; }
+        [BsonElement("_id")]
+		public string Id { get; set; }
 
 		public string UserName { get; set; }
 
