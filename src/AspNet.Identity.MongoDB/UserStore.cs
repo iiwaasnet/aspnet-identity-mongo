@@ -138,7 +138,7 @@
         {
             var builder = new FilterDefinitionBuilder<TUser>();
             var filter = builder
-                .ElemMatch<IList<UserLoginInfo>, UserLoginInfo>(u => u.Logins,
+                .ElemMatch<List<UserLoginInfo>, UserLoginInfo>(u => u.Logins,
                                                                 l => l.LoginProvider == login.LoginProvider
                                                                      && l.ProviderKey == login.ProviderKey);
 
