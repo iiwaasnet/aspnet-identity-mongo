@@ -126,9 +126,9 @@
         {
             var builder = new FilterDefinitionBuilder<TUser>();
             var filter = builder
-                .ElemMatch<List<UserLoginInfo>, UserLoginInfo>(u => u.Logins,
-                                                               l => l.LoginProvider == login.LoginProvider
-                                                                    && l.ProviderKey == login.ProviderKey);
+                .ElemMatch(u => u.Logins,
+                           l => l.LoginProvider == login.LoginProvider
+                                && l.ProviderKey == login.ProviderKey);
 
             return context.Users.Find(filter).FirstOrDefaultAsync();
         }
