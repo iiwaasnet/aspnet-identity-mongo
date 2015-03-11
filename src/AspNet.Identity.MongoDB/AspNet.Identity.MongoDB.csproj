@@ -60,7 +60,6 @@
   <ItemGroup>
     <Compile Include="UsersContext.cs" />
     <Compile Include="RolesContext.cs" />
-    <Compile Include="IdentityContext.cs" />
     <Compile Include="IdentityRole.cs" />
     <Compile Include="IdentityUser.cs" />
     <Compile Include="IdentityUserClaim.cs" />

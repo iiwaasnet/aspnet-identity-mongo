@@ -41,8 +41,6 @@
         public virtual Task UpdateAsync(TUser user)
         {
             // todo should add an optimistic concurrency check
-            // TODO: Unique index on UserName, in case someone updates his name to existing one
-            // TODO: Unique index on Email, in case someone updates his email to existing one
             return context
                 .Users
                 .ReplaceOneAsync(u => u.Id == user.Id, user, new UpdateOptions {IsUpsert = false});
@@ -62,8 +60,6 @@
 
         public virtual Task<TUser> FindByNameAsync(string userName)
         {
-            // todo exception on duplicates? or better to enforce unique index to ensure this
-            // TODO: Unique index would be better
             return context.Users.Find(u => u.UserName == userName).SingleOrDefaultAsync();
         }
 

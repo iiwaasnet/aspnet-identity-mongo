@@ -35,13 +35,11 @@
 
         public virtual Task CreateAsync(TRole role)
         {
-            // TODO: Unique index on role name
             return context.Roles.InsertOneAsync(role);
         }
 
         public virtual Task UpdateAsync(TRole role)
         {
-            // TODO: Unique index on role name
             return context.Roles.ReplaceOneAsync(r => r.Id == role.Id, role, new UpdateOptions {IsUpsert = false});
         }
 
