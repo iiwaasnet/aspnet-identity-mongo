@@ -15,7 +15,7 @@
                                     IUserSecurityStampStore<TUser>,
                                     IUserEmailStore<TUser>,
                                     IUserClaimStore<TUser>,
-                                    //IQueryableUserStore<TUser>,
+                                    IQueryableUserStore<TUser>,
                                     IUserPhoneNumberStore<TUser>,
                                     IUserTwoFactorStore<TUser, string>,
                                     IUserLockoutStore<TUser, string>
@@ -36,7 +36,6 @@
         public virtual Task CreateAsync(TUser user)
         {
             return context.Users.InsertOneAsync(user);
-            //return Task.Run(() => context.Users.Insert(user));
         }
 
         public virtual Task UpdateAsync(TUser user)
@@ -47,8 +46,6 @@
             return context
                 .Users
                 .ReplaceOneAsync(u => u.Id == user.Id, user, new UpdateOptions {IsUpsert = false});
-
-            //return Task.Run(() => context.Users.Save(user));
         }
 
         public virtual Task DeleteAsync(TUser user)
@@ -56,27 +53,18 @@
             return context
                 .Users
                 .FindOneAndDeleteAsync(u => u.Id == user.Id);
-
-            //var queryById = Query<TUser>.EQ(u => u.Id, user.Id);
-            //return Task.Run(() => context.Users.Remove(queryById));
         }
 
         public virtual Task<TUser> FindByIdAsync(string userId)
         {
             return context.Users.Find(u => u.Id == userId).FirstOrDefaultAsync();
-
-            //return Task.Run(() => context.Users.FindOneByIdAs<TUser>(ObjectId.Parse(userId)));
         }
 
         public virtual Task<TUser> FindByNameAsync(string userName)
         {
             // todo exception on duplicates? or better to enforce unique index to ensure this
             // TODO: Unique index would be better
-
             return context.Users.Find(u => u.UserName == userName).SingleOrDefaultAsync();
-
-            //var queryByName = Query<TUser>.EQ(u => u.UserName, userName);
-            //return Task.Run(() => context.Users.FindOneAs<TUser>(queryByName));
         }
 
         public virtual Task SetPasswordHashAsync(TUser user, string passwordHash)
@@ -139,15 +127,10 @@
             var builder = new FilterDefinitionBuilder<TUser>();
             var filter = builder
                 .ElemMatch<List<UserLoginInfo>, UserLoginInfo>(u => u.Logins,
-                                                                l => l.LoginProvider == login.LoginProvider
-                                                                     && l.ProviderKey == login.ProviderKey);
+                                                               l => l.LoginProvider == login.LoginProvider
+                                                                    && l.ProviderKey == login.ProviderKey);
 
             return context.Users.Find(filter).FirstOrDefaultAsync();
-
-            //return Task.Factory
-            //           .StartNew(() => context.Users.AsQueryable<TUser>()
-            //                                  .FirstOrDefault(u => u.Logins
-            //                                                        .Any(l => l.LoginProvider == login.LoginProvider && l.ProviderKey == login.ProviderKey)));
         }
 
         public virtual Task SetSecurityStampAsync(TUser user, string stamp)
@@ -186,9 +169,7 @@
         public virtual Task<TUser> FindByEmailAsync(string email)
         {
             // todo what if a user can have multiple accounts with the same email?
-
             return context.Users.Find(u => u.Email == email).SingleOrDefaultAsync();
-            //return Task.Run(() => context.Users.AsQueryable<TUser>().FirstOrDefault(u => u.Email == email));
         }
 
         public virtual Task<IList<Claim>> GetClaimsAsync(TUser user)
@@ -208,10 +189,10 @@
             return Task.FromResult(0);
         }
 
-        //public virtual IQueryable<TUser> Users
-        //{
-        //    get { return context.Users.AsQueryable<TUser>(); }
-        //}
+        public virtual IQueryable<TUser> Users
+        {
+            get { throw new NotImplementedException(); }
+        }
 
         public virtual Task SetPhoneNumberAsync(TUser user, string phoneNumber)
         {
