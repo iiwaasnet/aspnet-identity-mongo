@@ -69,6 +69,7 @@
     <Compile Include="UserStore.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AspNet.Identity.MongoDB-2.2.0.0-alpha.nupkg" />
     <None Include="AspNet.Identity.MongoDB.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>

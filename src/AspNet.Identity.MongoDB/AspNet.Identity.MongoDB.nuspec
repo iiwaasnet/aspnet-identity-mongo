@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>AspNet.Identity.MongoDB-2</id>
+    <version>2.0.0-alpha</version>
+    <title>AspNet.Identity.MongoDB</title>
+    <authors>Wes McClure, Sergey Ivasenko</authors>
+    <owners>Sergey Ivasenko</owners>
+    <licenseUrl>https://github.com/g0t4/aspnet-identity-mongo/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/g0t4/aspnet-identity-mongo</projectUrl>
+    <iconUrl>https://github.com/g0t4/aspnet-identity-mongo</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A mongodb provider for the new ASP.NET Identity framework. My aim is to ensure this project is well tested and configurable.</description>
+    <releaseNotes>Update .NET MongoDb driver to ver.2.0 beta-4</releaseNotes>
+    <copyright>MIT</copyright>
+    <tags>mongo mongodb aspnet identity</tags>
+  </metadata>
+</package>
