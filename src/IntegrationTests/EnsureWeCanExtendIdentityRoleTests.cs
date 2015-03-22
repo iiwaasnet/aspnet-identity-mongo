@@ -4,6 +4,7 @@
     using Microsoft.AspNet.Identity;
     using MongoDB.Driver;
     using NUnit.Framework;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class EnsureWeCanExtendIdentityRoleTests : UserIntegrationTestsBase
@@ -29,7 +30,7 @@
         }
 
         [Test]
-        public async void Create_ExtendedRoleType_SavesExtraFields()
+        public async Task Create_ExtendedRoleType_SavesExtraFields()
         {
             role.ExtendedField = "extendedField";
 

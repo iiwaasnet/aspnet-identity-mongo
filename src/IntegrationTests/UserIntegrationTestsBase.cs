@@ -4,6 +4,7 @@
 	using Microsoft.AspNet.Identity;
 	using MongoDB.Driver;
 	using NUnit.Framework;
+    using System.Threading.Tasks;
 
 	public class UserIntegrationTestsBase : AssertionHelper
 	{
@@ -14,7 +15,7 @@
 		protected RolesContext<IdentityRole> RolesContext;
 
 		[SetUp]
-		public async void BeforeEachTest()
+		public void BeforeEachTest()
 		{
 			var client = new MongoClient("mongodb://localhost:27017");
 			Database = client.GetDatabase("identity-testing");
@@ -23,8 +24,8 @@
             RolesContext = new RolesContext<IdentityRole>(Roles);
             UsersContext = new UsersContext<IdentityUser>(Users);
 
-			await Database.DropCollectionAsync("users");
-			await Database.DropCollectionAsync("roles");
+			 Database.DropCollectionAsync("users").Wait();
+			 Database.DropCollectionAsync("roles").Wait();
 		}
 
 		protected UserManager<IdentityUser> GetUserManager()

@@ -4,6 +4,7 @@
     using Microsoft.AspNet.Identity;
     using MongoDB.Driver;
     using NUnit.Framework;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class EnsureWeCanExtendIdentityUserTests : UserIntegrationTestsBase
@@ -29,7 +30,7 @@
         }
 
         [Test]
-        public async void Create_ExtendedUserType_SavesExtraFields()
+        public async Task Create_ExtendedUserType_SavesExtraFields()
         {
             user.ExtendedField = "extendedField";
 

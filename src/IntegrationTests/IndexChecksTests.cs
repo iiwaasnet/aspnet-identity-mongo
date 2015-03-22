@@ -5,12 +5,13 @@
     using MongoDB.Bson.Serialization;
     using MongoDB.Driver;
     using NUnit.Framework;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class IndexChecksTests : UserIntegrationTestsBase
     {
         [Test]
-        public async void EnsureUniqueIndexOnUserName_NoIndexOnUserName_AddsUniqueIndexOnUserName()
+        public async Task EnsureUniqueIndexOnUserName_NoIndexOnUserName_AddsUniqueIndexOnUserName()
         {
             var userCollectionName = "userindextest";
             await Database.DropCollectionAsync(userCollectionName);
@@ -27,7 +28,7 @@
         }
 
         [Test]
-        public async void EnsureEmailUniqueIndex_NoIndexOnEmail_AddsUniqueIndexOnEmail()
+        public async Task EnsureEmailUniqueIndex_NoIndexOnEmail_AddsUniqueIndexOnEmail()
         {
             var userCollectionName = "userindextest";
             await Database.DropCollectionAsync(userCollectionName);
@@ -44,7 +45,7 @@
         }
 
         [Test]
-        public async void EnsureUniqueIndexOnRoleName_NoIndexOnRoleName_AddsUniqueIndexOnRoleName()
+        public async Task EnsureUniqueIndexOnRoleName_NoIndexOnRoleName_AddsUniqueIndexOnRoleName()
         {
             var roleCollectionName = "roleindextest";
             await Database.DropCollectionAsync(roleCollectionName);

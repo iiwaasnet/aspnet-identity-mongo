@@ -3,12 +3,13 @@
     using AspNet.Identity.MongoDB;
     using MongoDB.Bson;
     using NUnit.Framework;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class IdentityUserTests : UserIntegrationTestsBase
     {
         [Test]
-        public async void Insert_NoId_SetsId()
+        public async Task Insert_NoId_SetsId()
         {
             var user = new IdentityUser();
 

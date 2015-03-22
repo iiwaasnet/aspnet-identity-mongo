@@ -4,6 +4,7 @@
     using Microsoft.AspNet.Identity;
     using MongoDB.Driver;
     using NUnit.Framework;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class UserRoleStoreTests : UserIntegrationTestsBase
@@ -21,7 +22,7 @@
         }
 
         [Test]
-        public async void AddRole_Adds()
+        public async Task AddRole_Adds()
         {
             var manager = GetUserManager();
             var user = new IdentityUser {UserName = "bob"};
@@ -35,7 +36,7 @@
         }
 
         [Test]
-        public async void RemoveRole_Removes()
+        public async Task RemoveRole_Removes()
         {
             var manager = GetUserManager();
             var user = new IdentityUser {UserName = "bob"};
