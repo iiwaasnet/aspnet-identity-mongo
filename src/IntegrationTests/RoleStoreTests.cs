@@ -5,12 +5,13 @@
     using MongoDB.Bson;
     using MongoDB.Driver;
     using NUnit.Framework;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class RoleStoreTests : UserIntegrationTestsBase
     {
         [Test]
-        public async void Create_NewRole_Saves()
+        public async Task Create_NewRole_Saves()
         {
             var roleName = "admin";
             var role = new IdentityRole(roleName);
@@ -51,7 +52,7 @@
         }
 
         [Test]
-        public async void Delete_ExistingRole_Removes()
+        public async Task Delete_ExistingRole_Removes()
         {
             var role = new IdentityRole {Name = "name"};
             var manager = GetRoleManager();
@@ -64,7 +65,7 @@
         }
 
         [Test]
-        public async void Update_ExistingRole_Updates()
+        public async Task Update_ExistingRole_Updates()
         {
             var role = new IdentityRole {Name = "name"};
             var manager = GetRoleManager();

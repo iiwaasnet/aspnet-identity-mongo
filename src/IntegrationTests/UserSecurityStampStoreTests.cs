@@ -5,12 +5,13 @@
 	using Microsoft.AspNet.Identity;
 	using MongoDB.Driver;
 	using NUnit.Framework;
+    using System.Threading.Tasks;
 
 	[TestFixture]
 	public class UserSecurityStampStoreTests : UserIntegrationTestsBase
 	{
 		[Test]
-		public async void Create_NewUser_HasSecurityStamp()
+		public async Task Create_NewUser_HasSecurityStamp()
 		{
 			var manager = GetUserManager();
 			var user = new IdentityUser {UserName = "bob"};

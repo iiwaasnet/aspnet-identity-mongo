@@ -5,12 +5,13 @@
     using Microsoft.AspNet.Identity;
     using MongoDB.Driver;
     using NUnit.Framework;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class UserLoginStoreTests : UserIntegrationTestsBase
     {
         [Test]
-        public async void AddLogin_NewLogin_Adds()
+        public async Task AddLogin_NewLogin_Adds()
         {
             var manager = GetUserManager();
             var login = new UserLoginInfo("provider", "key");
@@ -25,7 +26,7 @@
         }
 
         [Test]
-        public async void RemoveLogin_NewLogin_Removes()
+        public async Task RemoveLogin_NewLogin_Removes()
         {
             var manager = GetUserManager();
             var login = new UserLoginInfo("provider", "key");

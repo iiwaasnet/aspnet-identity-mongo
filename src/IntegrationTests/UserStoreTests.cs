@@ -5,12 +5,13 @@
     using MongoDB.Bson;
     using MongoDB.Driver;
     using NUnit.Framework;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class UserStoreTests : UserIntegrationTestsBase
     {
         [Test]
-        public async void Create_NewUser_Saves()
+        public async Task Create_NewUser_Saves()
         {
             var userName = "name";
             var user = new IdentityUser {UserName = userName};
@@ -72,7 +73,7 @@
         }
 
         [Test]
-        public async void Delete_ExistingUser_Removes()
+        public async Task Delete_ExistingUser_Removes()
         {
             var user = new IdentityUser {UserName = "name"};
             var manager = GetUserManager();
@@ -85,7 +86,7 @@
         }
 
         [Test]
-        public async void Update_ExistingUser_Updates()
+        public async Task Update_ExistingUser_Updates()
         {
             var user = new IdentityUser {UserName = "name"};
             var manager = GetUserManager();

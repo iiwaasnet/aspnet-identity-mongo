@@ -4,6 +4,7 @@
     using Microsoft.AspNet.Identity;
     using MongoDB.Driver;
     using NUnit.Framework;
+    using System.Threading.Tasks;
 
     [TestFixture]
     public class UserPasswordStoreTests : UserIntegrationTestsBase
@@ -34,7 +35,7 @@
         }
 
         [Test]
-        public async void RemovePassword_UserWithPassword_SetsPasswordNull()
+        public async Task RemovePassword_UserWithPassword_SetsPasswordNull()
         {
             var user = new IdentityUser {UserName = "bob"};
             var manager = GetUserManager();
