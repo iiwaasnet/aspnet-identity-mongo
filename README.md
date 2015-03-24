@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/yc63vlyvuddxu4vh?svg=true)](https://ci.appveyor.com/project/iiwaasnet/aspnet-identity-mongo)
+
 AspNet.Identity.Mongo
 =====================
 
